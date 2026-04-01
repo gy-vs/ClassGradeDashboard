@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: grade-backend
+    ports:
+      - "9999:5000"
+    networks:
+      - grade-network
+
+  frontend:
+    build:
+      context: ./frontend-user
+    container_name: grade-frontend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+    networks:
+      - grade-network
+
+networks:
+  grade-network:
+    driver: bridge
