@@ -1,0 +1,30 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app.py
+    networks:
+      - grade-dashboard
+
+  frontend:
+    build: ./frontend-user
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend-user:/app
+      - /app/node_modules
+    environment:
+      - VUE_APP_API_URL=http://localhost:5000
+    depends_on:
+      - backend
+    networks:
+      - grade-dashboard
+
+networks:
+  grade-dashboard:
+    driver: bridge
